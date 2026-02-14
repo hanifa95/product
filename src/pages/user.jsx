@@ -2,65 +2,60 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Newproduct = () => {
-  const [products, setProducts] = useState([]);
+const User = () => {
+  const [users, setUsers] = useState([]);
 
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [images, setImages] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const addProduct = async (e) => {
-    e.preventDefault(); 
+
+  const addUser = async (e) => {
+    e.preventDefault();
     const responce = await axios({
       method: "post",
-      url: "https://fakestoreapi.com/products/",
+      url: "https://fakestoreapi.com/users/",
       data: {
-        title: title,
-        price: price,
-        description: description,
-        categoryId: 1,
-        images: [images],
+        username: username,
+        email: email,
+        password: password,
       },
     });
     console.log("res", responce);
     if (responce.status == 201 || responce.status == 200) {
       alert("Product added");
-      setTitle('')
-      setPrice('')
-      setDescription('')
-      setCategory('')
-      setImages('')
+      setUsername('')
+      setEmail('')
+      setPassword('')
     } else {
       alert("Smth went wrong");
     }
   };
 
-  const fetchProducts = async () => {
+  const fetchUsers = async () => {
     const responce = await axios({
       method: "get",
-      url: "https://fakestoreapi.com/products",
+      url: "https://fakestoreapi.com/users",
     });
     console.log("responce", responce);
 
     if (responce.status == 200) {
-      setProducts(responce.data);
+      setUsers(responce.data);
     }
   };
   useEffect(() => {
-    fetchProducts();
+    fetchUsers();
   }, []);
 
-  const DeleteProduct = async (id) => {
+  const DeleteUser = async (id) => {
     const responce = await axios({
-      url: "https://fakestoreapi.com/products/" + id,
+      url: "https://fakestoreapi.com/users/" + id,
       method: "delete",
     });
     console.log("delete", responce);
     if (responce) {
       alert("Successfully delete!");
-      fetchProducts();
+      fetchUsers();
     } else {
       alert("Error");
     }
@@ -68,15 +63,15 @@ const Newproduct = () => {
 
   return (
     <div className="product container-fluid">
-      <h1 className="text-center pt-5 pb-4 text-success">
-        Product List
+      <h1 className="text-center pt-5 pb-4 text-warning">
+        User List
         <button
           type="button"
-          class="btn btn-success ms-5"
+          class="btn btn-warning ms-5"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
         >
-          Add Product
+          Add User
         </button>{" "}
       </h1>
 
@@ -91,7 +86,7 @@ const Newproduct = () => {
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Product
+                User
               </h1>
               <button
                 type="button"
@@ -103,39 +98,26 @@ const Newproduct = () => {
             <div class="modal-body">
               <input
                 type="text"
-                placeholder="Title"
-                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
                 className="form-control mb-3"
-                value={title}
-              />
-              <input
-                type="number"
-                placeholder="Price"
-                onChange={(e) => setPrice(e.target.value)}
-                className="form-control mb-3"
-                value={price}
+                value={username}
               />
               <input
                 type="text"
-                placeholder="Description"
-                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
                 className="form-control mb-3"
-                value={description}
+                value={email}
               />
               <input
                 type="number"
-                placeholder="Category ID"
-                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
                 className="form-control mb-3"
-                value={category}
+                value={password}
               />
-              <input
-                type="text"
-                placeholder="Image URL"
-                onChange={(e) => setImages(e.target.value)}
-                className="form-control mb-3"
-                value={images}
-              />
+            
             </div>
             <div class="modal-footer">
               <button
@@ -147,11 +129,11 @@ const Newproduct = () => {
               </button>
               <button
                 type="button"
-                class="btn btn-success"
+                class="btn btn-warning"
                 data-bs-dismiss="modal"
-                onClick={addProduct}
+                onClick={addUser}
               >
-                Add Product
+                Add User
               </button>
             </div>
           </div>
@@ -161,36 +143,36 @@ const Newproduct = () => {
       {/*  */}
 
       <div className="row">
-        {products.length > 0 && (
+        {users.length > 0 && (
           <>
-            {products.map((product) => (
-              <div className="col-3 ps-5 card mb-5 ms-5 bg-success">
-                {/* <img
-                  className="pt-3 pb-4"
-                  src={product.image}
-                  alt=""
-                  width={"200px"}
-                /> */}
+            {users.map((user) => (
+              <div className="col-3 ps-5 pe-4 card mb-5 ms-5 bg-danger-subtle">
 
-                <a href={"/detailproduct/" + product.id}>
+
+                <a href={"/detailproduct/" + user.id}>
                   <img
-                    src={product.image}
+                    src={user.image}
                     alt=""
                     className="pt-3 pb-4"
                     width={"200px"}
                   />
                 </a>
 
-                <h5>{product.title}</h5>
-                <p>{product.id}</p>
-                <p>{product.category}</p>
-                <p>{product.description}</p>
+                <h5>Username: {user.username}</h5>
+                <p>User ID{user.id}</p>
+                <p>Email: {user.email}</p>
+                <p>Password: {user.password}</p>
+                
                 <button
-                  className="btn btn-light mb-3"
-                  onClick={() => DeleteProduct(product.id)}
+                  className="btn btn-warning mb-3"
+                  onClick={() => DeleteUser(user.id)}
                 >
                   Delete
                 </button>
+                <div className="pt-2 pb-4">
+                <a className="text-warning" href="{/detailuser/ + user.id}">Подробнее...</a>
+                </div>
+              
               </div>
             ))}
           </>
@@ -199,4 +181,4 @@ const Newproduct = () => {
     </div>
   );
 };
-export default Newproduct;
+export default User;

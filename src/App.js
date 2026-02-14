@@ -7,6 +7,8 @@ import Detail from "./pages/detail";
 import Addproduct from "./pages/addproduct";
 import Newproduct from "./pages/newproduct";
 import Detailproduct from "./pages/detailproduct";
+import User from "./pages/user";
+import Detailuser from "./pages/detailuser";
 
 
 
@@ -21,6 +23,8 @@ function App() {
           <Route path="/addproduct" element={<Addproduct/>}></Route>
           <Route path="/newproduct" element={<Newproduct/>}></Route>
           <Route path="/detailproduct/:id" element={<Detailproduct/>}></Route>
+          <Route path="/user" element={<User/>}></Route>
+          <Route path="/detailuser/:id" element={<Detailuser/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
